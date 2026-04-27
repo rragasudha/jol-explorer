@@ -7,8 +7,9 @@ article-output/
 # Compiled class files
 *.class
 
-# Claude Code local settings (personal, not project-wide)
-.claude/settings.local.json
+# Claude Code files (local AI assistant config)
+CLAUDE.md
+.claude/
 
 # IDE — IntelliJ IDEA
 .idea/
