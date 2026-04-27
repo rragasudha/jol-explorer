@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+         http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>dev.captain</groupId>
+    <artifactId>jol-explorer</artifactId>
+    <version>1.0.0</version>
+    <packaging>jar</packaging>
+
+    <name>JOL Explorer — JVM Object Internals</name>
+    <description>
+        A hands-on project using Java Object Layout (JOL) to inspect how objects
+        look in JVM memory. Covers field reordering, lock state transitions in the
+        mark word, compact object headers (JEP 519), and memory impact at scale.
+    </description>
+
+    <properties>
+        <maven.compiler.source>21</maven.compiler.source>
+        <maven.compiler.target>21</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <jol.version>0.17</jol.version>
+    </properties>
+
+    <dependencies>
+        <!-- JOL: Java Object Layout — the core library for this project -->
+        <dependency>
+            <groupId>org.openjdk.jol</groupId>
+            <artifactId>jol-core</artifactId>
+            <version>${jol.version}</version>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <!-- Compiler plugin — explicit source/target for Java 21 -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.11.0</version>
+                <configuration>
+                    <source>21</source>
+                    <target>21</target>
+                    <!-- Enable preview features if needed for later chapters -->
+                    <!-- <compilerArgs><arg>- -enable-preview</arg></compilerArgs> -->
+                </configuration>
+            </plugin>
+
+            <!--
+                Exec plugin — lets you run each chapter individually without a fat JAR.
+                Usage:
+                  mvn exec:java -Dexec.mainClass="dev.captain.jol.Chapter1_BasicLayout"
+                  mvn exec:java -Dexec.mainClass="dev.captain.jol.Chapter2_LockStates"
+                  mvn exec:java -Dexec.mainClass="dev.captain.jol.Chapter3_CompactHeaders"
+                  mvn exec:java -Dexec.mainClass="dev.captain.jol.Chapter4_MemoryAtScale"
+                  mvn exec:java -Dexec.mainClass="dev.captain.jol.Chapter5_ArraysAndInheritance"
+            -->
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <version>3.1.0</version>
+                <configuration>
+                    <mainClass>dev.captain.jol.Chapter1_BasicLayout</mainClass>
+                    <!-- Add JVM args required by JOL for deep introspection -->
+                    <commandlineArgs>
+                        --add-opens java.base/java.lang=ALL-UNNAMED
+                    </commandlineArgs>
+                </configuration>
+            </plugin>
+
+            <!--
+                Assembly plugin — builds a runnable fat JAR with all dependencies.
+                Usage: mvn package  then  java -jar target/jol-explorer-1.0.0-jar-with-dependencies.jar
+            -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <version>3.6.0</version>
+                <configuration>
+                    <archive>
+                        <manifest>
+                            <mainClass>dev.captain.jol.Chapter1_BasicLayout</mainClass>
+                        </manifest>
+                    </archive>
+                    <descriptorRefs>
+                        <descriptorRef>jar-with-dependencies</descriptorRef>
+                    </descriptorRefs>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>make-assembly</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+</project>

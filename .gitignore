@@ -1,0 +1,29 @@
+# Maven build output
+target/
+
+# Article output (machine-specific JVM output, not for version control)
+article-output/
+
+# Compiled class files
+*.class
+
+# Claude Code local settings (personal, not project-wide)
+.claude/settings.local.json
+
+# IDE — IntelliJ IDEA
+.idea/
+*.iml
+*.iws
+*.ipr
+
+# IDE — VS Code
+.vscode/
+
+# IDE — Eclipse
+.classpath
+.project
+.settings/
+
+# OS
+.DS_Store
+Thumbs.db
