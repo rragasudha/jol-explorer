@@ -57,7 +57,11 @@ public class Chapter3_CompactHeaders {
     }
 
     /** Minimal: two ints — the simplest non-trivial POJO. */
-    record Point(int x, int y) {}
+    static class Point {
+    int x;
+    int y;
+    Point(int x, int y) { this.x = x; this.y = y; }
+}
 
     /** Heavier object — more fields means the 4-byte saving is still fixed. */
     static class HeavyPojo {

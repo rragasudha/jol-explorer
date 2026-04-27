@@ -35,7 +35,11 @@ import java.util.List;
  */
 public class Chapter4_MemoryAtScale {
 
-    record Point(int x, int y) {}
+    static class Point {
+    int x;
+    int y;
+    Point(int x, int y) { this.x = x; this.y = y; }
+}
 
     // Scale constants — adjust if memory is tight on your machine
     static final int SMALL_SCALE   =       100;
